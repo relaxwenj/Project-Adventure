@@ -4,19 +4,33 @@ import json
 def load_map(filename):
     try:
         with open(filename, 'r') as file:
-            return json.load(file)
+            map_data = json.load(file)
     except FileNotFoundError:
-        print("Error: Map file not found.")
-        return None 
+        sys.stderr.write("Error: Map file not found.\n")
+        sys.exit(1)
     except json.JSONDecodeError:
-        print("Error: Map file is not valid JSON.")
-        return None
+        sys.stderr.write("Error: Map file is not valid JSON.\n")
+        sys.exit(1)
+    
+    # Validate map data
+    if not validate_map(map_data):
+        sys.stderr.write("Error: Invalid map configuration.\n")
+        sys.exit(1)
+    
+    return map_data
 
-def find_room_by_name(rooms, name):
-    for room in rooms:
-        if room['name'] == name:
-            return room
-    return None
+def validate_map(data):
+    if 'rooms' not in data or 'start' not in data:
+        return False
+    room_names = {room['name'] for room in data['rooms']}
+    if data['start'] not in room_names:
+        return False
+    for room in data['rooms']:
+        for exit in room['exits'].values():
+            if exit not in room_names:
+                return False
+    return True
+
 
 class AdventureGame:
     def __init__(self, map_file):
