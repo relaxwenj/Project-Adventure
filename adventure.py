@@ -18,7 +18,6 @@ def load_map(filename):
     
     return map_data
 
-
 def validate_map(data):
     if 'rooms' not in data or 'start' not in data:
         return False
@@ -34,7 +33,6 @@ def validate_map(data):
                 sys.stderr.write(f"Error: Invalid exit '{exit}' in room '{room['name']}'.\n")
                 return False
     return True
-
 
 def find_room_by_name(rooms, name):
     for room in rooms:
@@ -75,14 +73,15 @@ class AdventureGame:
             next_room_name = self.current_room['exits'][direction]
             self.current_room = find_room_by_name(self.map['rooms'], next_room_name)
         else:
-            print("There's no way to go that direction.")
+            print("No exit in that direction.")
 
     def get_item(self, item):
         if item in self.current_room.get('items', []):
             self.inventory.append(item)
             self.current_room['items'].remove(item)
+            print(f"Picked up {item}. Inventory now: {self.inventory}")
         else:
-            print(f"There's no {item} here.")
+            print(f"No {item} in room.")
 
     def show_inventory(self):
         if not self.inventory:
