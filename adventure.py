@@ -1,4 +1,3 @@
-
 import sys
 import json
 
@@ -50,7 +49,10 @@ class AdventureGame:
 
     def describe_room(self):
         items = ", ".join(self.current_room.get('items', [])) if self.current_room.get('items', []) else "No items"
-        print(f"> {self.current_room['name']}\n{self.current_room['desc']}\nExits: {' '.join(self.current_room['exits'].keys())}\nItems: {items}")
+        print(f"> {self.current_room['name']}\n\n{self.current_room['desc']}\n\nExits: {' '.join(self.current_room['exits'].keys())}\n")
+        if items != "No items":
+            print(f"Items: {items}")
+        print()
 
     def parse_command(self, command):
         command = command.strip().lower()
@@ -63,8 +65,7 @@ class AdventureGame:
         elif command == 'inventory':
             self.show_inventory()
         elif command == 'look':
-            # self.describe_room()
-            pass
+            self.describe_room()
         elif command == 'quit':
             self.quit_game()
         else:
