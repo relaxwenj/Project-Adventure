@@ -1,3 +1,4 @@
+
 import sys
 import json
 
@@ -62,7 +63,8 @@ class AdventureGame:
         elif command == 'inventory':
             self.show_inventory()
         elif command == 'look':
-            self.describe_room()
+            # self.describe_room()
+            pass
         elif command == 'quit':
             self.quit_game()
         else:
