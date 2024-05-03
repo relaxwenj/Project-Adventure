@@ -1,0 +1,57 @@
+{
+  "start": "A white room",
+  "rooms": [
+    {
+      "name": "A white room",
+      "desc": "You are in a simple room with white walls.",
+      "exits": {
+        "north": "A blue room",
+        "east": "A red room"
+      }
+    },
+    {
+      "name": "A blue room",
+      "desc": "This room is simple, too, but with blue walls.",
+      "exits": {
+        "east": "A green room",
+        "south": "A white room"
+      },
+      "items": ["scorpion grasses"]
+    },
+    {
+      "name": "A green room",
+      "desc": "You are in a simple room, with bright green walls.",
+      "exits": {
+        "west": "A yellow room",
+        "south": "A red room"
+      },
+      "items": ["insecticide"]
+    },
+    {
+      "name": "A yellow room",
+      "desc": "You are in a yellow room. Yeah, they were all yellow",
+      "exits": {
+        "west": "A white room",
+        "south": "A blue room"
+      },
+      "items": ["daisy"]
+    },
+    {
+      "name": "A red room",
+      "desc": "This room is fancy. It's red!",
+      "exits": {
+        "north": "A greenhouse",
+        "west": "A white room"
+      },
+      "items": ["rose"]
+    },
+    {
+      "name": "A greenhouse",
+      "desc": "This room is thermostatic. Feel free to plant some flowers~",
+      "exits": {
+        "north": "A blue room",
+        "west": "A white room"
+      }
+    }
+  ]
+}
