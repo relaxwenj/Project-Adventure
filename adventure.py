@@ -31,6 +31,11 @@ def validate_map(data):
                 return False
     return True
 
+def find_room_by_name(rooms, name):
+    for room in rooms:
+        if room['name'] == name:
+            return room
+    return None
 
 class AdventureGame:
     def __init__(self, map_file):
