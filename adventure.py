@@ -51,10 +51,14 @@ class AdventureGame:
     def describe_room(self):
         if not self.room_description_displayed:  
             items = ", ".join(self.current_room.get('items', [])) if self.current_room.get('items', []) else "No items"
-            print(f"> {self.current_room['name']}\n\n{self.current_room['desc']}\n\nExits: {' '.join(self.current_room['exits'].keys())}\n")
+            print(f"> {self.current_room['name']}\n\n{self.current_room['desc']}\n")
             if items != "No items":
                 print(f"Items: {items}\n")
+            print(f"Exits: {' '.join(self.current_room['exits'].keys())}\n")
             self.room_description_displayed = True 
+
+
+
     def show_inventory(self):
         if not self.inventory:
             print("You're not carrying anything.")
@@ -70,9 +74,12 @@ class AdventureGame:
             direction = command[3:].strip()
             self.move(direction)
             print()
-        elif command.startswith('get '):
-            item = command[4:].strip()
-            self.get_item(item)
+        elif command.startswith('get'):
+            if len(command.split()) == 1:
+                print("Sorry, you need to 'get' something.")
+            else:
+                item = command[4:].strip()
+                self.get_item(item)
         elif command == 'inventory':
             self.show_inventory()
         elif command == 'look':
@@ -103,9 +110,9 @@ class AdventureGame:
         if item in self.current_room.get('items', []):
             self.inventory.append(item)
             self.current_room['items'].remove(item)
-            print(f"Picked up {item}. Inventory now: {self.inventory}")
+            print(f"You pick up the {item}. Inventory now: {self.inventory}")
         else:
-            print(f"There's no {item}anywhere.")
+            print(f"There's no {item} anywhere.")
             
 
     def show_inventory(self):
@@ -115,7 +122,6 @@ class AdventureGame:
             print("Inventory:")
             for item in self.inventory:
                 print(f"  {item}")
-        print("What would you like to do?\n")
 
 
 
