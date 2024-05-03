@@ -24,9 +24,6 @@ def validate_map(data):
     room_names = {room['name'] for room in data['rooms']}
     if data['start'] not in room_names:
         return False
-    if len(room_names) != len(data['rooms']):
-        sys.stderr.write("Error: Duplicate room names detected.\n")
-        return False
     for room in data['rooms']:
         for exit in room['exits'].values():
             if exit not in room_names:
@@ -72,17 +69,15 @@ class AdventureGame:
         if direction in self.current_room['exits']:
             next_room_name = self.current_room['exits'][direction]
             self.current_room = find_room_by_name(self.map['rooms'], next_room_name)
-            print(f"DEBUG: Moved to {self.current_room['name']}.")
         else:
-            print("DEBUG: No exit in that direction.")
+            print("There's no way to go that direction.")
 
     def get_item(self, item):
         if item in self.current_room.get('items', []):
             self.inventory.append(item)
             self.current_room['items'].remove(item)
-            print(f"DEBUG: Picked up {item}. Inventory now: {self.inventory}")
         else:
-            print(f"DEBUG: No {item} in room.")
+            print(f"There's no {item} here.")
 
     def show_inventory(self):
         if not self.inventory:
