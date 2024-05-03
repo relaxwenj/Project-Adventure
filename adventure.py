@@ -70,10 +70,11 @@ class AdventureGame:
 
     def parse_command(self, command):
         command = command.strip().lower()
-        if command.startswith('go '):
+        if command == 'go':
+            print("Sorry, you need to 'go' somewhere.")
+        elif command.startswith('go '):
             direction = command[3:].strip()
             self.move(direction)
-            print()
         elif command.startswith('get'):
             if len(command.split()) == 1:
                 print("Sorry, you need to 'get' something.")
@@ -83,34 +84,34 @@ class AdventureGame:
         elif command == 'inventory':
             self.show_inventory()
         elif command == 'look':
-            pass
+            self.describe_room()
+            self.room_description_displayed = False  # Ensuring the room is described again
         elif command == 'quit':
             self.quit_game()
+        elif command == 'help':
+            print("Commands you can use: go, get, inventory, look, quit")
         else:
             print("Sorry, I don't understand that.")
+
 
     def move(self, direction):
         if direction in self.current_room['exits']:
             next_room_name = self.current_room['exits'][direction]
             self.current_room = find_room_by_name(self.map['rooms'], next_room_name)
             print(f"You go {direction}.")
+            print()
             self.room_description_displayed = False  
         else:
-            while True:
-                print(f"There's no way to go {direction}.")
-                new_direction = input("What would you like to do? ").strip().lower()
-                if new_direction.startswith('go ') and new_direction[3:].strip() in self.current_room['exits']:
-                    self.move(new_direction[3:].strip())
-                    break
-                else:
-                    print("Sorry, you need to 'go' somewhere.")
+            print(f"There's no way to go {direction}.")
+            self.room_description_displayed = True 
+
 
 
     def get_item(self, item):
         if item in self.current_room.get('items', []):
             self.inventory.append(item)
             self.current_room['items'].remove(item)
-            print(f"You pick up the {item}. Inventory now: {self.inventory}")
+            print(f"You pick up the {item}.")
         else:
             print(f"There's no {item} anywhere.")
             
