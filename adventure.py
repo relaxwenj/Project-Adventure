@@ -20,16 +20,16 @@ def load_map(filename):
 
 def validate_map(data):
     if 'rooms' not in data or 'start' not in data:
-        return False
+        raise ValueError("Map data missing rooms or start.")
     room_names = {room['name'] for room in data['rooms']}
     if data['start'] not in room_names:
-        return False
+        raise ValueError("Start room not found in rooms.")
     for room in data['rooms']:
         for exit in room['exits'].values():
             if exit not in room_names:
-                sys.stderr.write(f"Error: Invalid exit '{exit}' in room '{room['name']}'.\n")
-                return False
+                raise ValueError(f"Invalid exit '{exit}' in room '{room['name']}'.")
     return True
+
 
 def find_room_by_name(rooms, name):
     for room in rooms:
