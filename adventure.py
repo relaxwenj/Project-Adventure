@@ -134,7 +134,7 @@ class AdventureGame:
     def run(self):
         while self.running:
             self.describe_room()
-            command = input("> What would you like to do? ").strip().lower()
+            command = input("What would you like to do? ").strip().lower()
             self.parse_command(command)
 
 if __name__ == '__main__':
