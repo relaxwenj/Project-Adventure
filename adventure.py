@@ -64,7 +64,7 @@ class AdventureGame:
         elif command == 'inventory':
             self.show_inventory()
         elif command == 'look':
-            self.describe_room()
+            pass
         elif command == 'quit':
             self.quit_game()
         else:
@@ -74,8 +74,9 @@ class AdventureGame:
         if direction in self.current_room['exits']:
             next_room_name = self.current_room['exits'][direction]
             self.current_room = find_room_by_name(self.map['rooms'], next_room_name)
+            print(f"You go {direction}.")
         else:
-            print("No exit in that direction.")
+            print("There's no way to go in that direction.")
 
     def get_item(self, item):
         if item in self.current_room.get('items', []):
@@ -83,7 +84,7 @@ class AdventureGame:
             self.current_room['items'].remove(item)
             print(f"Picked up {item}. Inventory now: {self.inventory}")
         else:
-            print(f"No {item} in room.")
+            print(f"No {item} in the room.")
 
     def show_inventory(self):
         if not self.inventory:
@@ -102,7 +103,6 @@ class AdventureGame:
             self.describe_room()
             command = input("> What would you like to do? ").strip().lower()
             self.parse_command(command)
-            print()  # Add an empty line after processing the command
 
 if __name__ == '__main__':
     if len(sys.argv) != 2:
