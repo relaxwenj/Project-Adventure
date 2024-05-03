@@ -51,8 +51,7 @@ class AdventureGame:
         items = ", ".join(self.current_room.get('items', [])) if self.current_room.get('items', []) else "No items"
         print(f"> {self.current_room['name']}\n\n{self.current_room['desc']}\n\nExits: {' '.join(self.current_room['exits'].keys())}\n")
         if items != "No items":
-            print(f"Items: {items}")
-        print()
+            print(f"Items: {items}\n")
 
     def parse_command(self, command):
         command = command.strip().lower()
@@ -103,6 +102,7 @@ class AdventureGame:
             self.describe_room()
             command = input("> What would you like to do? ").strip().lower()
             self.parse_command(command)
+            print()  # Add an empty line after processing the command
 
 if __name__ == '__main__':
     if len(sys.argv) != 2:
