@@ -12,7 +12,6 @@ def load_map(filename):
         sys.stderr.write("Error: Map file is not valid JSON.\n")
         sys.exit(1)
     
-    # Validate map data
     if not validate_map(map_data):
         sys.stderr.write("Error: Invalid map configuration.\n")
         sys.exit(1)
@@ -25,9 +24,13 @@ def validate_map(data):
     room_names = {room['name'] for room in data['rooms']}
     if data['start'] not in room_names:
         return False
+    if len(room_names) != len(data['rooms']):
+        sys.stderr.write("Error: Duplicate room names detected.\n")
+        return False
     for room in data['rooms']:
         for exit in room['exits'].values():
             if exit not in room_names:
+                sys.stderr.write(f"Error: Invalid exit '{exit}' in room '{room['name']}'.\n")
                 return False
     return True
 
@@ -40,27 +43,22 @@ def find_room_by_name(rooms, name):
 class AdventureGame:
     def __init__(self, map_file):
         self.map = load_map(map_file)
-        if not self.map:
-            print("Failed to load the map.")
-            self.running = False
-        else:
-            self.current_room = find_room_by_name(self.map['rooms'], self.map['start'])
-            self.inventory = []
-            self.running = True
+        self.current_room = find_room_by_name(self.map['rooms'], self.map['start'])
+        self.inventory = []
+        self.running = True
 
     def describe_room(self):
-        if 'items' in self.current_room and self.current_room['items']:
-            items = ", ".join(self.current_room['items'])
-        else:
-            items = "No items"
+        items = ", ".join(self.current_room.get('items', [])) if self.current_room.get('items', []) else "No items"
         print(f"> {self.current_room['name']}\n{self.current_room['desc']}\nExits: {' '.join(self.current_room['exits'].keys())}\nItems: {items}")
 
     def parse_command(self, command):
         command = command.strip().lower()
         if command.startswith('go '):
-            self.move(command[3:].strip())
+            direction = command[3:].strip()
+            self.move(direction)
         elif command.startswith('get '):
-            self.get_item(command[4:].strip())
+            item = command[4:].strip()
+            self.get_item(item)
         elif command == 'inventory':
             self.show_inventory()
         elif command == 'look':
@@ -72,19 +70,19 @@ class AdventureGame:
 
     def move(self, direction):
         if direction in self.current_room['exits']:
-            self.current_room = find_room_by_name(self.map['rooms'], self.current_room['exits'][direction])
-            if not self.current_room:
-                print("Error: The room you are trying to move to does not exist.")
+            next_room_name = self.current_room['exits'][direction]
+            self.current_room = find_room_by_name(self.map['rooms'], next_room_name)
+            print(f"DEBUG: Moved to {self.current_room['name']}.")
         else:
-            print("There's no way to go that direction.")
+            print("DEBUG: No exit in that direction.")
 
     def get_item(self, item):
         if item in self.current_room.get('items', []):
             self.inventory.append(item)
             self.current_room['items'].remove(item)
-            print(f"You pick up the {item}.")
+            print(f"DEBUG: Picked up {item}. Inventory now: {self.inventory}")
         else:
-            print(f"There's no {item} here.")
+            print(f"DEBUG: No {item} in room.")
 
     def show_inventory(self):
         if not self.inventory:
