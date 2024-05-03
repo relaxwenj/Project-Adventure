@@ -46,18 +46,30 @@ class AdventureGame:
         self.current_room = find_room_by_name(self.map['rooms'], self.map['start'])
         self.inventory = []
         self.running = True
+        self.room_description_displayed = False 
 
     def describe_room(self):
-        items = ", ".join(self.current_room.get('items', [])) if self.current_room.get('items', []) else "No items"
-        print(f"> {self.current_room['name']}\n\n{self.current_room['desc']}\n\nExits: {' '.join(self.current_room['exits'].keys())}\n")
-        if items != "No items":
-            print(f"Items: {items}\n")
+        if not self.room_description_displayed:  
+            items = ", ".join(self.current_room.get('items', [])) if self.current_room.get('items', []) else "No items"
+            print(f"> {self.current_room['name']}\n\n{self.current_room['desc']}\n\nExits: {' '.join(self.current_room['exits'].keys())}\n")
+            if items != "No items":
+                print(f"Items: {items}\n")
+            self.room_description_displayed = True 
+    def show_inventory(self):
+        if not self.inventory:
+            print("You're not carrying anything.")
+        else:
+            print("Inventory:")
+            for item in self.inventory:
+                print(f"  {item}")
+        print("What would you like to do?\n")
 
     def parse_command(self, command):
         command = command.strip().lower()
         if command.startswith('go '):
             direction = command[3:].strip()
             self.move(direction)
+            print()
         elif command.startswith('get '):
             item = command[4:].strip()
             self.get_item(item)
@@ -75,8 +87,17 @@ class AdventureGame:
             next_room_name = self.current_room['exits'][direction]
             self.current_room = find_room_by_name(self.map['rooms'], next_room_name)
             print(f"You go {direction}.")
+            self.room_description_displayed = False  
         else:
-            print("There's no way to go in that direction.")
+            while True:
+                print(f"There's no way to go {direction}.")
+                new_direction = input("What would you like to do? ").strip().lower()
+                if new_direction.startswith('go ') and new_direction[3:].strip() in self.current_room['exits']:
+                    self.move(new_direction[3:].strip())
+                    break
+                else:
+                    print("Sorry, you need to 'go' somewhere.")
+
 
     def get_item(self, item):
         if item in self.current_room.get('items', []):
@@ -84,7 +105,8 @@ class AdventureGame:
             self.current_room['items'].remove(item)
             print(f"Picked up {item}. Inventory now: {self.inventory}")
         else:
-            print(f"No {item} in the room.")
+            print(f"There's no {item}anywhere.")
+            
 
     def show_inventory(self):
         if not self.inventory:
@@ -93,6 +115,10 @@ class AdventureGame:
             print("Inventory:")
             for item in self.inventory:
                 print(f"  {item}")
+        print("What would you like to do?\n")
+
+
+
 
     def quit_game(self):
         print("Goodbye!")
