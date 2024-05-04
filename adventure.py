@@ -60,6 +60,7 @@ class AdventureGame:
             print(f"Exits: {' '.join(self.current_room['exits'].keys())}\n")
             self.room_description_displayed = True 
 
+    # Extra feature for droping
     def drop_item(self, item):
         if item in self.inventory:
             self.inventory.remove(item)
@@ -69,6 +70,7 @@ class AdventureGame:
         else:
             print(f"You don't have {item} in your inventory.")
 
+    # Extra feature for winning or losing conditions
     def check_game_status(self):
         if self.current_room['name'] == "A greenhouse":
             room_items = set(self.current_room.get('items', []))
@@ -152,6 +154,7 @@ class AdventureGame:
             for item in self.inventory:
                 print(f"  {item}")
 
+    # Extra feature for unlocking
     def unlock(self, direction):
         if direction in self.current_room['exits']:
             if "locked" in self.current_room and direction in self.current_room['locked']:
@@ -162,6 +165,7 @@ class AdventureGame:
         else:
             print(f"There is no door in the {direction} direction.")
 
+    # Extra feature for locking
     def lock(self, direction):
         if direction in self.current_room['exits']:
             if "locked" in self.current_room:
