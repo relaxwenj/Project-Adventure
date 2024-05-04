@@ -27,17 +27,17 @@ One tough problem I encountered was handling command parsing. Initially, I used 
 
 7. a list of the three extensions you’ve chosen to implement, with appropriate detail on them for the CAs to evaluate them (i.e., what are the new verbs/features, how do you exercise them, where are they in the map.
    
-1. A "drop" verb. 
+# A "drop" verb. 
 This extension enables users to remove an item from their inventory and place it in the current room. Users can only drop items that they currently have. 
 
 To test it, first, I obtain some items from the room, and then I use the "drop" command which calling the drop_item function in my code to append the items into map's rooms list, under items object. I utilize the inventory to verify successfully dropping items, and use "look" to check if that they can be successfully dropped in any room.
 
-2. Locked door. 
+# Locked door. 
 I have added two functions, "lock" and "unlock," to my code. These functions allow users to lock or unlock any door in the room without using any items. Additionally, I have configured the maps to include "locked" objects that indicate some doors in some direction are locked upon entering the room. If users want to access a door that is originally locked, they must first unlock it.
 
 To test it, I randomly choose a door in the room, then I type "lock + direction" to lock the door. If I then attempt to "go + direction," it will display the message, "The door is locked, you must unlock it" to proceed in that direction. After I type "unlock + direction," I can successfully pass through the door. The maps will also shows which doors in loocked by default. In my maps, if the door is locked, the description of that room will show "This room is XXX. The west door is locked.". Users have to unlock it to access the door.
 
-3. Winning and losing conditions.
+# Winning and losing conditions.
 I have added winning and losing conditions to my code. The winning condition is achieved when users drop any type of plant in a specific room—"A greenhouse." The losing condition is triggered when users drop "insecticide." If players win or lose, the game will immediately terminate, displaying either "Congratulations! You've successfully planted a flower in the greenhouse and won the game!" or "You have used insecticide in the greenhouse and killed all the plants. You lose the game." I have added a "A greenhouse" room into the map to ensure the presence of the winning or losing room. In my code, I have also defined the winning items as {'daisy', 'rose', 'scorpion grasses'} and the losing item as {'insecticide'}.
 
 To test it, I will pick up some winning items and attempt to reach "A greenhouse." If the item is one of the winning items I have defined in my code, and I drop it in that room, I will win the game. If I pick up the 'insecticide' and drop it into "A Greenhouse," I will lose the game. Dropping items in any room other than "A greenhouse" will not affect the outcome of the game.
