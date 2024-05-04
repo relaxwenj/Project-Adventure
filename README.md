@@ -1,6 +1,6 @@
 # Project-Adventure
 
-1. your name and Stevens login:
+# your name and Stevens login:
 
 Jing Wen jwen11@stevens.edu
 
