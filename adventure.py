@@ -46,7 +46,10 @@ class AdventureGame:
         self.current_room = find_room_by_name(self.map['rooms'], self.map['start'])
         self.inventory = []
         self.running = True
-        self.room_description_displayed = False 
+        self.room_description_displayed = False
+        # Define winning and losing items
+        self.win_items = {'daisy', 'rose', 'scorpion grasses'}
+        self.lose_items = {'insecticide'}
 
     def describe_room(self):
         if not self.room_description_displayed:  
@@ -57,16 +60,25 @@ class AdventureGame:
             print(f"Exits: {' '.join(self.current_room['exits'].keys())}\n")
             self.room_description_displayed = True 
 
-
-
-    def show_inventory(self):
-        if not self.inventory:
-            print("You're not carrying anything.")
+    def drop_item(self, item):
+        if item in self.inventory:
+            self.inventory.remove(item)
+            self.current_room.setdefault('items', []).append(item)
+            print(f"You drop the {item}.")
+            self.check_game_status()
         else:
-            print("Inventory:")
-            for item in self.inventory:
-                print(f"  {item}")
-        print("What would you like to do?\n")
+            print(f"You don't have {item} in your inventory.")
+
+    def check_game_status(self):
+        if self.current_room['name'] == "A greenhouse":
+            room_items = set(self.current_room.get('items', []))
+            if self.win_items.intersection(room_items):
+                print("Congratulations! You've successfully planted a flower in the greenhouse and won the game!")
+                self.quit_game()
+            elif self.lose_items.intersection(room_items):
+                print("You have used insecticide in the greenhouse and killed all the plants. You lose the game.")
+                self.quit_game()
+
 
     def parse_command(self, command):
         command = command.strip().lower()
@@ -81,18 +93,23 @@ class AdventureGame:
             else:
                 item = command[4:].strip()
                 self.get_item(item)
+        elif command.startswith('drop'):
+            if len(command.split()) == 1:
+                print("Sorry, you need to 'drop' something.")
+            else:
+                item = command[5:].strip()
+                self.drop_item(item)
         elif command == 'inventory':
             self.show_inventory()
         elif command == 'look':
             self.describe_room()
-            self.room_description_displayed = False  # Ensuring the room is described again
+            self.room_description_displayed = False 
         elif command == 'quit':
             self.quit_game()
         elif command == 'help':
-            print("Commands you can use: go, get, inventory, look, quit")
+            print("Commands you can use: go, get, drop, inventory, look, quit")
         else:
             print("Sorry, I don't understand that.")
-
 
     def move(self, direction):
         if direction in self.current_room['exits']:
@@ -104,8 +121,6 @@ class AdventureGame:
         else:
             print(f"There's no way to go {direction}.")
             self.room_description_displayed = True 
-
-
 
     def get_item(self, item):
         if item in self.current_room.get('items', []):
@@ -124,9 +139,6 @@ class AdventureGame:
             for item in self.inventory:
                 print(f"  {item}")
 
-
-
-
     def quit_game(self):
         print("Goodbye!")
         self.running = False
@@ -140,6 +152,7 @@ class AdventureGame:
 if __name__ == '__main__':
     if len(sys.argv) != 2:
         print("Usage: python3 adventure.py [map filename]")
+        sys.exit(1)
     else:
         game = AdventureGame(sys.argv[1])
         game.run()
