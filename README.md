@@ -25,7 +25,7 @@ NO.
 
 One tough problem I encountered was handling command parsing. Initially, I used startswith to simplify command parsing, but this method didn't work well for commands like "go" when entered without additional text, which should result in an error message. To solve this, I had to split the command into different situations. For commands like "get" and "drop", I continued using startswith but added a check if len(command.split()) == 1: to determine if any text followed the command. For "go", "lock", and "unlock", I used a strict equality condition to judge whether a command was entered without necessary additional information. These methods were used in the same function to help effectively parse and respond to user inputs. It also reminded me that I need to carefully handle verb commands and consider all possible scenarios to ensure they are properly addressed.
 
-7. a list of the three extensions you’ve chosen to implement, with appropriate detail on them for the CAs to evaluate them (i.e., what are the new verbs/features, how do you exercise them, where are they in the map
+7. a list of the three extensions you’ve chosen to implement, with appropriate detail on them for the CAs to evaluate them (i.e., what are the new verbs/features, how do you exercise them, where are they in the map.
 
 1. A "drop" verb. 
 This extension enables users to remove an item from their inventory and place it in the current room. Users can only drop items that they currently have. 
