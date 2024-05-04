@@ -14,8 +14,7 @@ Around 18 hours. I used around 10 hours to understand the promp, set up the map,
 
 # a description of how you tested your code:
 
-Combine autograder and manually test. I set up different maps while testing my code. Also, I compared every verb's output
-with the canvas' example.
+Combine autograder and manually test. I set up different maps while testing my code. Also, I compared every verb's output to canvas' examples.
 
 # any bugs or issues you could not resolve:
 
