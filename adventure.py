@@ -128,6 +128,7 @@ class AdventureGame:
                 next_room_name = self.current_room['exits'][direction]
                 self.current_room = find_room_by_name(self.map['rooms'], next_room_name)
                 print(f"You go {direction}.")
+                print()
                 self.room_description_displayed = False
         else:
             print(f"There's no way to go {direction}.")
