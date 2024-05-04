@@ -106,21 +106,33 @@ class AdventureGame:
             self.room_description_displayed = False 
         elif command == 'quit':
             self.quit_game()
-        elif command == 'help':
-            print("Commands you can use: go, get, drop, inventory, look, quit")
+        elif command == 'unlock':
+            print("You have to choose one door to unlock it.")
+        elif command.startswith('unlock '):
+            direction = command[7:].strip()
+            self.unlock(direction)
+        elif command == 'lock':
+            print("You have to choose one door to lock it.")
+        elif command.startswith('lock '):
+            direction = command[5:].strip()
+            self.lock(direction)
         else:
             print("Sorry, I don't understand that.")
 
+
     def move(self, direction):
         if direction in self.current_room['exits']:
-            next_room_name = self.current_room['exits'][direction]
-            self.current_room = find_room_by_name(self.map['rooms'], next_room_name)
-            print(f"You go {direction}.")
-            print()
-            self.room_description_displayed = False  
+            if "locked" in self.current_room and self.current_room['locked'].get(direction, False):
+                print(f"The door to the {direction} is locked. Please unlock it first.")
+            else:
+                next_room_name = self.current_room['exits'][direction]
+                self.current_room = find_room_by_name(self.map['rooms'], next_room_name)
+                print(f"You go {direction}.")
+                self.room_description_displayed = False
         else:
             print(f"There's no way to go {direction}.")
-            self.room_description_displayed = True 
+            self.room_description_displayed = True
+
 
     def get_item(self, item):
         if item in self.current_room.get('items', []):
@@ -138,6 +150,28 @@ class AdventureGame:
             print("Inventory:")
             for item in self.inventory:
                 print(f"  {item}")
+
+    def unlock(self, direction):
+        if direction in self.current_room['exits']:
+            if "locked" in self.current_room and direction in self.current_room['locked']:
+                self.current_room['locked'][direction] = False
+                print(f"You have unlocked the door to the {direction}.")
+            else:
+                print(f"There is no lock on the door to the {direction}.")
+        else:
+            print(f"There is no door in the {direction} direction.")
+
+    def lock(self, direction):
+        if direction in self.current_room['exits']:
+            if "locked" in self.current_room:
+                self.current_room['locked'][direction] = True
+                print(f"You have locked the door to the {direction}.")
+            else:
+                self.current_room['locked'] = {direction: True}
+                print(f"You have locked the door to the {direction}.")
+        else:
+            print(f"There is no door in the {direction} direction.")
+
 
     def quit_game(self):
         print("Goodbye!")
