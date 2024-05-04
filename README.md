@@ -10,7 +10,7 @@ https://github.com/relaxwenj/Project-Adventure
 
 # an estimate of how many hours you spent on the project:
 
-Around 18 hours. I used around 10 hours to understand the promp, set up the map, and twirte the code. Around 5 hours to test run and debug. Around 2 hours to write the README.md
+Around 18 hours. I used around 10 hours to understand the promp, set up the map, and wirte the code. Around 5 hours to test run and debug. Around 2 hours to write the README.md
 
 # a description of how you tested your code:
 
