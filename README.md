@@ -29,7 +29,7 @@ One tough problem I encountered was handling command parsing. Initially, I used 
 # A "drop" verb. 
 This extension enables users to remove an item from their inventory and place it in the current room. Users can only drop items that they currently have. 
 
-To test it, first, I obtain some items from the room, and then I use the "drop" command which calling the drop_item function in my code to append the items into map's rooms list, under items object. I utilize the inventory to verify successfully dropping items, and use "look" to check if that they can be successfully dropped in any room.
+To test it, I first obtain some items from the room, then use the "drop" command, which calls the drop_item function in my code to append the items to the room's items object in the map. I utilize the inventory to verify that the items have been successfully dropped, and use the "look" command to check if they can be successfully dropped in any room.
 
 # Locked door. 
 I have added two functions, "lock" and "unlock," to my code. These functions allow users to lock or unlock any door in the room without using any items. Additionally, I have configured the maps to include "locked" objects that indicate some doors in some direction are locked upon entering the room. If users want to access a door that is originally locked, they must first unlock it.
