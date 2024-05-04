@@ -11,12 +11,15 @@
     },
     {
       "name": "A blue room",
-      "desc": "This room is simple, too, but with blue walls.",
+      "desc": "This room is simple, too, but with blue walls. The south door is locked.",
       "exits": {
         "east": "A green room",
         "south": "A white room"
       },
-      "items": ["scorpion grasses"]
+      "items": ["scorpion grasses"],
+      "locked": {
+        "south": true
+      }
     },
     {
       "name": "A green room",
@@ -38,12 +41,15 @@
     },
     {
       "name": "A red room",
-      "desc": "This room is fancy. It's red!",
+      "desc": "This room is fancy. It's red! The west door is locked.",
       "exits": {
         "north": "A greenhouse",
         "west": "A white room"
       },
-      "items": ["rose"]
+      "items": ["rose"],
+      "locked": {
+        "west": true
+      }
     },
     {
       "name": "A greenhouse",
@@ -55,4 +61,3 @@
     }
   ]
 }
-
